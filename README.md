@@ -43,3 +43,14 @@ Usage:
 ```basic
 LASKEVIITE(number)
 ```
+
+### Perl
+
+[viitenumero.pl](viitenumero.pl).
+
+Usage:
+
+```shell
+# ./viitenumero.pl 23409678
+2340 96783
+```
