@@ -37,7 +37,7 @@ Function LaskeViite(ByVal numerosarja As String) As String
     Dim Laskuri As Byte        ' laskuri
     Dim sarjanPituus As Byte   ' numerosarjan pituus
     Dim tarkisteNumero As Byte ' tarkistenumero
-    Dim sarjanSumma As String  ' numerosarjan summa
+    Dim sarjanSumma As Integer ' numerosarjan summa
     Dim kertoimet(2) As Byte   ' kertoimet
     Dim i As Integer
     Dim j As Integer
@@ -58,7 +58,7 @@ Function LaskeViite(ByVal numerosarja As String) As String
 
     'käydään numerosarja lävitse
     Do While Laskuri < sarjanPituus
-        sarjanSumma = sarjanSumma + (Mid(numerosarja, sarjanPituus - Laskuri, 1) * kertoimet(Laskuri Mod 3))
+        sarjanSumma = sarjanSumma + (kertoimet(Laskuri Mod 3) * Mid(numerosarja, sarjanPituus - Laskuri, 1))
         Laskuri = Laskuri + 1 'laskurin inkrementointi
     Loop
 

@@ -34,4 +34,12 @@ Usage:
 
 ### Basic
 
-[viitenumero.bas](viitenumero.bas).
+[viitenumero.bas](viitenumero.bas). The main purpose of this file is
+to easily check the code. However, it's meant to be used as a macro in
+a spreadsheet like [viitenumero.ods](viitenumero.ods).
+
+Usage:
+
+```basic
+LASKEVIITE(number)
+```
