@@ -24,50 +24,59 @@
 # SOFTWARE.
 #
 # Authors:
-#    Chiman
+#    Chiman, ossimantylahti
 
 # Code re-licensed as MIT from the public domain publishing at:
 #
 # https://www.ohjelmointiputka.net/koodivinkit/26782-python-viitenumerolaskuri
 
 
-def viitenumeron_tarkiste(viitenumero_raaka):
-    """palauta annetun tarkisteettoman viitenumeron perään kuuluva tarkistenumero"""
-    kertoimet = (7, 3, 1)
-    viitenumero_raaka = viitenumero_raaka.replace(' ', '')
-    nrot_kaanteinen = map(int, viitenumero_raaka[::-1])
-    tulosumma = sum(kertoimet[i % 3] * x for i, x in enumerate(nrot_kaanteinen))
-    return (10 - (tulosumma % 10)) % 10
+def reference_number_check_digit(reference_number_raw):
+    """return checksum number of non-checksum referencen number 
+    palauta annetun tarkisteettoman viitenumeron perään kuuluva tarkistenumero"""
+    multiplication_feed = (7, 3, 1)
+    reference_number_raw = reference_number_raw.replace(' ', '')
+    numbers_reverse = map(int, reference_number_raw[::-1])
+    sum_of_multiplication = sum(multiplication_feed[i % 3] * x for i, x in enumerate(numbers_reverse))
+    return (10 - (sum_of_multiplication % 10)) % 10
 
-def viitenumero_ok(viitenumero):
-    """tarkista vastaako lopun tarkistenumero viitenumeron alkuosaa"""
-    return viitenumeron_tarkiste(viitenumero[:-1]) == int(viitenumero[-1])
+def reference_number_ok(viitenumero):
+    """check if checksum is valid 
+    tarkista vastaako lopun tarkistenumero viitenumeron alkuosaa"""
+    return reference_number_check_digit(viitenumero[:-1]) == int(viitenumero[-1])
 
-def jaa_ryhmiin_oikealta(s, n):
-    """palauta merkkijono s eroteltuna n merkin ryhmiin, välilyönti erottaa
+def divide_in_groups_from_right(s, n):
+    """divide a string separated by space in grops of n 
+
+    Start grouping from the right end.
+    Example s='1234567890', n=4 returns '12 3456 7890'
+
+
+    palauta merkkijono s eroteltuna n merkin ryhmiin, välilyönti erottaa
 
     Ryhmittely aloitetaan oikeasta reunasta.
     Esimerkki: s='1234567890', n=4 palauttaa '12 3456 7890'
 
     """
-    kaannetty = s[::-1]
-    osat = [(' ' if i and i % n == 0 else '') + c for i, c in enumerate(kaannetty)]
-    return ''.join(osat)[::-1]
+    reversed_number = s[::-1]
+    part_of_number = [(' ' if i and i % n == 0 else '') + c for i, c in enumerate(reversed_number)]
+    return ''.join(part_of_number)[::-1]
 
-def testit():
-    assert viitenumeron_tarkiste('1662') == 5
-    assert viitenumero_ok('16625')
-    assert jaa_ryhmiin_oikealta('966846848', 5) == '9668 46848'
-    print('testit ok')
+def tests():
+    assert reference_number_check_digit('1662') == 5
+    assert reference_number_ok('16625')
+    assert divide_in_groups_from_right('966846848', 5) == '9668 46848'
+    print('Testing ok')
 
 if __name__ == '__main__':
     from sys import argv
     if len(argv) == 2:
         # oleta argumentiksi viitenumero ilman tarkistetta, tulosta tarkisteen kanssa
-        viite_raaka = argv[-1]
-        tarkiste = viitenumeron_tarkiste(viite_raaka)
-        viite = viite_raaka + str(tarkiste)
-        print(jaa_ryhmiin_oikealta(viite, 5))
+        # Expect the argument to be a reference number without checksum. Output with checksum
+        reference_number_raw = argv[-1]
+        checksum_number = reference_number_check_digit(reference_number_raw)
+        reference_number_calculated = reference_number_raw + str(checksum_number)
+        print(divide_in_groups_from_right(reference_number_calculated, 5))
     else:
-        testit()
-        print('Anna argumenttina viitenumero ilman tarkistetta')
+        tests()
+        print('Please input reference number without checksum')
